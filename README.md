@@ -1,1 +1,3 @@
-# AISS-Integracion
+# GitMiner
+ GitMiner - Mining tool for Git project platforms
+
