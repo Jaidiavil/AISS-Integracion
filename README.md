@@ -1,5 +1,5 @@
 # GitMiner
  GitMiner - Mining tool for Git project platforms
 
-Prueba de commit
+Prueba de commit 2
 
