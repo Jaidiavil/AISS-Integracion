@@ -1,4 +1,4 @@
 package aiss.gitminer.controller;
 
-public class GitMinerController {
+public class IssueController {
 }
