@@ -1,8 +1,5 @@
 package aiss.gitminer.exception;
 
-<<<<<<< HEAD
-public class GlobalExceptionHandler {
-=======
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -30,5 +27,4 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
 
     }
->>>>>>> origin/main
 }

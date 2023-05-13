@@ -1,4 +1,4 @@
-UserControllerpackage aiss.gitminer.controller;
+package aiss.gitminer.controller;
 
 public class CommitController {
 }
