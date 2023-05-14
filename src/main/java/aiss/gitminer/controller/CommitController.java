@@ -44,6 +44,17 @@ public class CommitController {
         }
     }
 
+    @Operation(
+            summary = "Retrieve a commit",
+            description = "Get a commit",
+            tags = {"commit", "get"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "A commit",
+                    content = {@Content(schema = @Schema(implementation = Commit.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Commit not found",
+                    content = {@Content(schema = @Schema())})
+    })
+
     @GetMapping("/{id}")
     public Commit findCommitById(@PathVariable String id){
         Optional<Commit> result = commitRepository.findById(id);

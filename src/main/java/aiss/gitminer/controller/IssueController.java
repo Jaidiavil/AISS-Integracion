@@ -51,15 +51,36 @@ public class IssueController {
         }
     }
 
+    @Operation(
+            summary = "Retrieve a issue",
+            description = "Get a issue",
+            tags = {"issue", "get"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "A issue",
+                    content = {@Content(schema = @Schema(implementation = Issue.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Issue not found",
+                    content = {@Content(schema = @Schema())})
+    })
+
     @GetMapping("/{id}")
     public Issue findIssueById(@PathVariable String id){
         Optional<Issue> result = issueRepository.findById(id);
         return result.get();
     }
 
+    @Operation(
+            summary = "Retrieve a list of comments by issue's id",
+            description = "Get a list of comments by issue's id",
+            tags = {"comments", "get"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "A list of comments from an issue",
+                    content = {@Content(schema = @Schema(implementation = Comment.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Issue not found",
+                    content = {@Content(schema = @Schema())})
+    })
+
     @GetMapping("/{id}/comments")
     public List<Comment> findCommentsByIssue(@PathVariable String id){
         return issueRepository.findById(id).get().getComments();
     }
-
 }

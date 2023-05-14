@@ -40,11 +40,33 @@ public class ProjectController {
         return projectRepository.findAll();
     }
 
+    @Operation(
+            summary = "Retrieve a project",
+            description = "Get a project",
+            tags = {"project", "get"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "A project",
+                    content = {@Content(schema = @Schema(implementation = Project.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Project not found",
+                    content = {@Content(schema = @Schema())})
+    })
+
     @GetMapping("/{id}")
     public Project findProjectById(@PathVariable String id){
         Optional<Project> result = projectRepository.findById(id);
         return result.get();
     }
+
+    @Operation(
+            summary = "Create a project",
+            description = "Create a project",
+            tags = {"create", "get"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "A created project",
+                    content = {@Content(schema = @Schema(implementation = Project.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Project not created",
+                    content = {@Content(schema = @Schema())})
+    })
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -57,6 +79,17 @@ public class ProjectController {
                 project.getIssues()));
         return newProject;
     }
+
+    @Operation(
+            summary = "Update a project",
+            description = "Update a project",
+            tags = {"update", "get"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "A updated project",
+                    content = {@Content(schema = @Schema(implementation = Project.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Update not created",
+                    content = {@Content(schema = @Schema())})
+    })
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -71,6 +104,17 @@ public class ProjectController {
         projectRepository.save(dataProject);
 
     }
+
+    @Operation(
+            summary = "Delete a project",
+            description = "Delete a project",
+            tags = {"delete", "get"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "A deleted project",
+                    content = {@Content(schema = @Schema(implementation = Project.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Deletion not created",
+                    content = {@Content(schema = @Schema())})
+    })
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

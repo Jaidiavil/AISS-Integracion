@@ -39,6 +39,16 @@ public class CommentController {
         return commentRepository.findAll();
     }
 
+    @Operation(
+            summary = "Retrieve a comments",
+            description = "Get a comments",
+            tags = {"comment", "get"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "A comment",
+                    content = {@Content(schema = @Schema(implementation = Comment.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Comment not found",
+                    content = {@Content(schema = @Schema())})
+    })
     @GetMapping("/{id}")
     public Comment findCommentById(@PathVariable String id){
         Optional<Comment> result = commentRepository.findById(id);
