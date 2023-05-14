@@ -11,6 +11,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +40,22 @@ public class ProjectController {
     })
 
     @GetMapping
-    public List<Project> findProject(){
-        return projectRepository.findAll();
+    public List<Project> findAll(@RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "10") int size,
+                                 @RequestParam(required = false) String order){
+
+        Pageable paging;
+
+        if(order != null) {
+            if (order.startsWith("-"))
+                paging = PageRequest.of(page, size, Sort.by(order.substring(1)).descending());
+            else
+                paging = PageRequest.of(page, size, Sort.by(order).ascending());
+        }
+        else {
+            paging = PageRequest.of(page, size);
+        }
+        return projectRepository.findAll(paging).getContent();
     }
 
     @Operation(
@@ -53,7 +70,7 @@ public class ProjectController {
     })
 
     @GetMapping("/{id}")
-    public Project findProjectById(@PathVariable String id) throws NotFoundExcept {
+    public Project findOne(@PathVariable String id) throws NotFoundExcept {
         Optional<Project> result = projectRepository.findById(id);
         if (!result.isPresent()) {
             throw new NotFoundExcept();
@@ -74,7 +91,7 @@ public class ProjectController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Project createComment(@RequestBody @Valid Project project) {
+    public Project createProject(@RequestBody @Valid Project project) {
         Project newProject = projectRepository.save(new Project(
                 project.getId(),
                 project.getName(),
@@ -97,7 +114,7 @@ public class ProjectController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateComment(@RequestBody @Valid Comment updatedComment, @PathVariable String id) {
+    public void update(@RequestBody @Valid Comment updatedComment, @PathVariable String id) {
         Optional<Project> projectData = projectRepository.findById(id);
         Project dataProject = projectData.get();
         dataProject.setName(dataProject.getName());
@@ -122,7 +139,7 @@ public class ProjectController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteComment(@PathVariable String id) {
+    public void delete(@PathVariable String id) {
         if (projectRepository.existsById(id)){
             projectRepository.deleteById(id);
         }
