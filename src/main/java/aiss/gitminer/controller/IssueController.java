@@ -58,7 +58,7 @@ public class IssueController {
     }
 
     @GetMapping("/{id}/comments")
-    public List<Comment> findCommentsByIssue(String id){
+    public List<Comment> findCommentsByIssue(@PathVariable String id){
         return issueRepository.findById(id).get().getComments();
     }
 

@@ -37,7 +37,7 @@ public class CommitController {
 
     @GetMapping
     public List<Commit> findCommits(@RequestParam(required = false) String author_email){
-        if (author_email != null) {
+        if (author_email == null) {
             return commitRepository.findAll();
         } else {
             return commitRepository.findByAuthorEmail(author_email);
