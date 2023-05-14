@@ -7,6 +7,7 @@ import aiss.gitminer.model.User;
 import aiss.gitminer.repository.CommitRepository;
 import aiss.gitminer.repository.IssueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +23,17 @@ public class IssueController {
     IssueRepository issueRepository;
 
     @GetMapping
-    public List<Issue> findIssue(){
-        return issueRepository.findAll();
+    public List<Issue> findIssue(@RequestParam(required = false) String authorId, @RequestParam(required = false) String state){
+        if (authorId != null && state != null) {
+            return issueRepository.findAll();
+        } else if (authorId != null) {
+            return issueRepository.findIssuesByAuthorId(authorId);
+        } else if (state != null) {
+            return issueRepository.findIssuesByAuthorId(state);
+        } else {
+            return issueRepository.findAll();
+        }
+        ;
     }
 
     @GetMapping("/{id}")
@@ -38,12 +48,12 @@ public class IssueController {
     }
 
     @GetMapping("/{id}")
-    public List<Issue> findIssueByAuthorId(User authorId){
+    public List<Issue> findIssueByAuthorId(@Param("authorId") User authorId){
         return issueRepository.findIssuesByAuthorId(authorId);
     }
 
     @GetMapping("/{id}")
-    public List<Issue> findIssueByState(String state){
+    public List<Issue> findIssueByState(@Param("state")String state){
         return issueRepository.findIssuesByState(state);
     }
 

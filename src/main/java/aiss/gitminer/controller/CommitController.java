@@ -5,6 +5,7 @@ import aiss.gitminer.model.User;
 import aiss.gitminer.repository.CommitRepository;
 import aiss.gitminer.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,12 @@ public class CommitController {
     CommitRepository commitRepository;
 
     @GetMapping
-    public List<Commit> findCommit(){
-        return commitRepository.findAll();
+    public List<Commit> findCommits(@RequestParam(required = false) String email){
+        if (email != null) {
+            return commitRepository.findAll();
+        } else {
+            return commitRepository.findByEmail(email);
+        }
     }
 
     @GetMapping("/{id}")
@@ -29,10 +34,10 @@ public class CommitController {
         return result.get();
     }
 
-    @GetMapping("/{id}/{email}")
-    public List<Commit> findCommitByEmail(String email){
-        return commitRepository.findByEmail(email);
-    }
+//    @GetMapping("/{id}/{email}")
+//    public List<Commit> findCommitByEmail(@Param("email") String email){
+//        return commitRepository.findByEmail(email);
+//    }
 
 
     @PostMapping

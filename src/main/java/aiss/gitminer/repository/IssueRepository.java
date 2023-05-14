@@ -13,7 +13,7 @@ import java.util.List;
 public interface IssueRepository extends JpaRepository<Issue, String> {
 
     @Query
-    List<Issue> findIssuesByAuthorId(User authorId);
+    List<Issue> findIssuesByAuthorId(String authorId);
 
     @Query
     List<Issue> findIssuesByState(String state);

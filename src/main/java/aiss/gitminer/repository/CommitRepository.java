@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface CommitRepository extends JpaRepository<Commit, String> {
-
     @Query
     List<Commit> findByEmail(String email);
 }
