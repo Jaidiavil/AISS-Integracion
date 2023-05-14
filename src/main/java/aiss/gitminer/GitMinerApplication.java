@@ -13,9 +13,9 @@ public class GitMinerApplication {
 		SpringApplication.run(GitMinerApplication.class, args);
 	}
 
-	@Bean
-	public RestTemplate restTemplate(RestTemplateBuilder builder){return builder.build();}
-
+//	@Bean
+//	public RestTemplate restTemplate(RestTemplateBuilder builder){return builder.build();}
+//
 
 
 

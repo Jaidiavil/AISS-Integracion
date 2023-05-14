@@ -4,6 +4,11 @@ import aiss.gitminer.model.Comment;
 import aiss.gitminer.model.Project;
 import aiss.gitminer.repository.CommentRepository;
 import aiss.gitminer.repository.ProjectRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +23,17 @@ public class ProjectController {
 
     @Autowired
     ProjectRepository projectRepository;
+
+    @Operation(
+            summary = "Retrieve a list of projects",
+            description = "Get a list of projects",
+            tags = {"projects", "get"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "List of projects",
+                    content = {@Content(schema = @Schema(implementation = Project.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Projects not found",
+                    content = {@Content(schema = @Schema())})
+    })
 
     @GetMapping
     public List<Project> findProject(){

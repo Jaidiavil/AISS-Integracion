@@ -1,7 +1,13 @@
 package aiss.gitminer.controller;
 
+import aiss.gitminer.model.Project;
 import aiss.gitminer.model.User;
 import aiss.gitminer.repository.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,48 +23,19 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Operation(
+            summary = "Retrieve a list of users",
+            description = "Get a list of users",
+            tags = {"users", "get"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "List of users",
+                    content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Users not found",
+                    content = {@Content(schema = @Schema())})
+    })
+
     @GetMapping
-    public List<User> findAll(){
+    public List<User> findUsers(){
         return userRepository.findAll();
     }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public User createProject(@RequestBody @Valid User user) {
-        User newUser = userRepository.save(new User(
-                user.getId(),
-                user.getUsername(),
-                user.getName(),
-                user.getAvatarUrl(),
-                user.getWebUrl()));
-        return newUser;
-    }
-
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateUser(@RequestBody @Valid User updatedUser, @PathVariable String id) {
-        Optional<User> userData = userRepository.findById(id);
-        User dataUser = userData.get();
-        dataUser.setUsername(updatedUser.getUsername());
-        dataUser.setName(updatedUser.getName());
-        dataUser.setAvatarUrl(updatedUser.getAvatarUrl());
-        dataUser.setWebUrl(updatedUser.getWebUrl());
-        userRepository.save(dataUser);
-
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable String id) {
-        if (userRepository.existsById(id)){
-            userRepository.deleteById(id);
-        }
-    }
-
-
-
-
-
-
-
 }

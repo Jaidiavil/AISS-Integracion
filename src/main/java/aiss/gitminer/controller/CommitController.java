@@ -4,6 +4,11 @@ import aiss.gitminer.model.Commit;
 import aiss.gitminer.model.User;
 import aiss.gitminer.repository.CommitRepository;
 import aiss.gitminer.repository.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -18,6 +23,17 @@ import java.util.Optional;
 public class CommitController {
     @Autowired
     CommitRepository commitRepository;
+
+    @Operation(
+            summary = "Retrieve a list of commits",
+            description = "Get a list of commits",
+            tags = {"commits", "get"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "List of commits",
+                    content = {@Content(schema = @Schema(implementation = Commit.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Commits not found",
+                    content = {@Content(schema = @Schema())})
+    })
 
     @GetMapping
     public List<Commit> findCommits(@RequestParam(required = false) String author_email){
@@ -34,52 +50,4 @@ public class CommitController {
         return result.get();
     }
 
-//    @GetMapping("/{id}/{email}")
-//    public List<Commit> findCommitByEmail(@Param("email") String email){
-//        return commitRepository.findByEmail(email);
-//    }
-
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Commit createCommit(@RequestBody @Valid Commit commit) {
-        Commit newCommit = commitRepository.save(new Commit(
-                commit.getId(),
-                commit.getTitle(),
-                commit.getMessage(),
-                commit.getAuthorName(),
-                commit.getAuthorEmail(),
-                commit.getAuthoredDate(),
-                commit.getCommitterName(),
-                commit.getCommitterEmail(),
-                commit.getCommittedDate(),
-                commit.getWebUrl()));
-        return newCommit;
-    }
-
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateUser(@RequestBody @Valid Commit updatedCommit, @PathVariable String id) {
-        Optional<Commit> commitData = commitRepository.findById(id);
-        Commit dataCommit = commitData.get();
-        dataCommit.setTitle(updatedCommit.getTitle());
-        dataCommit.setMessage(updatedCommit.getMessage());
-        dataCommit.setAuthorName(updatedCommit.getAuthorName());
-        dataCommit.setAuthorEmail(updatedCommit.getAuthorEmail());
-        dataCommit.setAuthoredDate(updatedCommit.getAuthoredDate());
-        dataCommit.setCommitterName(updatedCommit.getCommitterName());
-        dataCommit.setCommitterEmail(updatedCommit.getCommitterEmail());
-        dataCommit.setCommittedDate(updatedCommit.getCommittedDate());
-        dataCommit.setWebUrl(updatedCommit.getWebUrl());
-        commitRepository.save(dataCommit);
-
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCommit(@PathVariable String id) {
-        if (commitRepository.existsById(id)){
-            commitRepository.deleteById(id);
-        }
-    }
 }
