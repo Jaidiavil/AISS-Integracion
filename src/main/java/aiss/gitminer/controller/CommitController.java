@@ -20,11 +20,11 @@ public class CommitController {
     CommitRepository commitRepository;
 
     @GetMapping
-    public List<Commit> findCommits(@RequestParam(required = false) String email){
-        if (email != null) {
+    public List<Commit> findCommits(@RequestParam(required = false) String author_email){
+        if (author_email != null) {
             return commitRepository.findAll();
         } else {
-            return commitRepository.findByEmail(email);
+            return commitRepository.findByAuthorEmail(author_email);
         }
     }
 

@@ -25,15 +25,14 @@ public class IssueController {
     @GetMapping
     public List<Issue> findIssue(@RequestParam(required = false) String authorId, @RequestParam(required = false) String state){
         if (authorId != null && state != null) {
-            return issueRepository.findAll();
+            return issueRepository.findIssuesByAuthorIdAndState(authorId, state);
         } else if (authorId != null) {
             return issueRepository.findIssuesByAuthorId(authorId);
         } else if (state != null) {
-            return issueRepository.findIssuesByAuthorId(state);
+            return issueRepository.findIssuesByState(state);
         } else {
             return issueRepository.findAll();
         }
-        ;
     }
 
     @GetMapping("/{id}")
@@ -46,17 +45,6 @@ public class IssueController {
     public List<Comment> findCommentsByIssue(String id){
         return issueRepository.findById(id).get().getComments();
     }
-
-    @GetMapping("/{id}")
-    public List<Issue> findIssueByAuthorId(@Param("authorId") User authorId){
-        return issueRepository.findIssuesByAuthorId(authorId);
-    }
-
-    @GetMapping("/{id}")
-    public List<Issue> findIssueByState(@Param("state")String state){
-        return issueRepository.findIssuesByState(state);
-    }
-
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
