@@ -1,5 +1,6 @@
 package aiss.gitminer.controller;
 
+import aiss.gitminer.exception.NotFoundExcept;
 import aiss.gitminer.model.Comment;
 import aiss.gitminer.model.Commit;
 import aiss.gitminer.repository.CommentRepository;
@@ -41,7 +42,7 @@ public class CommentController {
 
     @Operation(
             summary = "Retrieve a comments",
-            description = "Get a comments",
+            description = "Get a comment",
             tags = {"comment", "get"})
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "A comment",
@@ -50,8 +51,11 @@ public class CommentController {
                     content = {@Content(schema = @Schema())})
     })
     @GetMapping("/{id}")
-    public Comment findCommentById(@PathVariable String id){
+    public Comment findCommentById(@PathVariable String id) throws NotFoundExcept{
         Optional<Comment> result = commentRepository.findById(id);
+        if (!result.isPresent()) {
+            throw new NotFoundExcept();
+        }
         return result.get();
     }
 

@@ -1,5 +1,6 @@
 package aiss.gitminer.controller;
 
+import aiss.gitminer.exception.NotFoundExcept;
 import aiss.gitminer.model.Comment;
 import aiss.gitminer.model.Commit;
 import aiss.gitminer.model.Issue;
@@ -63,8 +64,11 @@ public class IssueController {
     })
 
     @GetMapping("/{id}")
-    public Issue findIssueById(@PathVariable String id){
+    public Issue findIssueById(@PathVariable String id) throws NotFoundExcept{
         Optional<Issue> result = issueRepository.findById(id);
+        if (!result.isPresent()) {
+            throw new NotFoundExcept();
+        }
         return result.get();
     }
 

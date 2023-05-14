@@ -3,6 +3,6 @@ package aiss.gitminer.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(code= HttpStatus.NOT_FOUND,reason = "Proyecto no encontrado")
-public class ProjectNotFoundExcept extends Exception{
+@ResponseStatus(code= HttpStatus.NOT_FOUND,reason = "Not not found")
+public class NotFoundExcept extends Exception{
 }
