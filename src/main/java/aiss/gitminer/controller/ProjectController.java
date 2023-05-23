@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/gitminer")
+@RequestMapping("/gitminer/projects")
 public class ProjectController {
 
     @Autowired
