@@ -3,7 +3,6 @@ package aiss.gitminer.controller;
 import aiss.gitminer.exception.NotFoundExcept;
 import aiss.gitminer.model.Comment;
 import aiss.gitminer.model.Project;
-import aiss.gitminer.repository.CommentRepository;
 import aiss.gitminer.repository.ProjectRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/gitminer/projects")
+@RequestMapping("/gitminer")
 public class ProjectController {
 
     @Autowired
