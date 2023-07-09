@@ -35,7 +35,7 @@ public class CommentController {
             description = "Get a list of comments",
             tags = {"comments", "get"})
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "List of comments",
+            @ApiResponse(responseCode =  "200", description = "List of comments",
                     content = {@Content(schema = @Schema(implementation = Comment.class), mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "Comments not found",
                     content = {@Content(schema = @Schema())})
